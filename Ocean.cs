@@ -5,7 +5,7 @@ namespace battle_ship_in_the_oo_way_stare_bosmany
         private string name;
         private Square[,] array2d;
         private Ship[] shipArray = new Ship[5];
-        private int totalShips = 0;
+        private int shipCounter = 0; //licznik statkow
         private string[] shipTypes = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"};
 
         
@@ -49,7 +49,7 @@ namespace battle_ship_in_the_oo_way_stare_bosmany
         public bool CreateShip(int x, int y, string type, bool vertical = false)
         {
             //shipArray pelna - zakoncz dzialanie i zwroc false
-            if(totalShips == shipArray.Length)
+            if(shipCounter == shipArray.Length)
             {
                 return false;
             }
@@ -59,16 +59,34 @@ namespace battle_ship_in_the_oo_way_stare_bosmany
             //if(~spaceOk || shipLength == 0)
             //  return false
 
+
             //stworz pod tablice Square dla statku
             //stworz tablice Squre o odpowiednim rozmiarze
+            Square[] tempSquareArray = new Square[shipLength];
             if(vertical)
             {
-                
+                for(int i = 0; i < shipLength; i++)
+                {
+                    tempSquareArray[i] = array2d[x + i, y];
+                }
+            }
+            else
+            {
+                for(int i = 0; i < shipLength; i++)
+                {
+                    tempSquareArray[i] = array2d[x, y + i];
+                }
             }
 
-            //shipArray[totalShips] = new Ship(new , type, vertical);
-            totalShips++;
+            shipArray[shipCounter] = new Ship(tempSquareArray, type, vertical);
+            shipCounter++;
+            
             return true;
+        }
+
+        public string GetSquareStatus(int x, int y)
+        {
+            return array2d[x, y].Occupied;
         }
         
     }
